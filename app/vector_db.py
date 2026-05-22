@@ -10,8 +10,6 @@ except ImportError:
     from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
-import sys
-sys.path.append('..')
 from config.settings import CHROMA_DB_PATH, COLLECTION_NAME
 from app.embedding import EmbeddingModel
 
