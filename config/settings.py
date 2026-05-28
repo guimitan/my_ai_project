@@ -21,8 +21,8 @@ CHROMA_DB_PATH = str(VECTOR_STORE_DIR / "chroma_db")
 COLLECTION_NAME = "jie_rag_collection"
 
 # 文本分割配置
-CHUNK_SIZE = 1000  # 每个文本块的大小
-CHUNK_OVERLAP = 200  # 文本块之间的重叠
+CHUNK_SIZE = 500  # 每个文本块的大小
+CHUNK_OVERLAP = 50  # 文本块之间的重叠
 
 # 嵌入模型配置
 # 使用阿里通义千问嵌入模型

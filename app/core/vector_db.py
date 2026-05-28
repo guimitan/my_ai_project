@@ -2,6 +2,8 @@
 向量数据库 - 使用ChromaDB存储和检索向量
 """
 from typing import List, Optional
+import json
+from datetime import datetime
 try:
     # LangChain 0.2+ / 1.x 的新导入路径
     from langchain_chroma import Chroma
@@ -10,8 +12,11 @@ except ImportError:
     from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent.parent))
 from config.settings import CHROMA_DB_PATH, COLLECTION_NAME
-from app.embedding import EmbeddingModel
+from app.core.embedding import EmbeddingModel
 
 
 class LangChainEmbeddings(Embeddings):
@@ -162,3 +167,92 @@ class VectorDatabase:
             return self.vectorstore._collection.count()
         except Exception as e:
             raise Exception(f"获取文档数量失败: {str(e)}")
+    
+    def export_to_json(self, output_path: str = None, include_embeddings: bool = False) -> str:
+        """
+        将向量数据库中的所有文档导出为JSON文件
+        
+        Args:
+            output_path: 输出文件路径，如果为None则自动生成
+            include_embeddings: 是否包含向量嵌入（会增加文件大小）
+            
+        Returns:
+            导出文件的完整路径
+        """
+        if self.vectorstore is None:
+            self.initialize()
+        
+        try:
+            # 获取所有文档数据
+            collection = self.vectorstore._collection
+            results = collection.get(
+                include=['metadatas', 'documents'] + (['embeddings'] if include_embeddings else [])
+            )
+            
+            # 构建导出数据结构
+            export_data = {
+                "export_info": {
+                    "collection_name": self.collection_name,
+                    "export_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "total_documents": len(results['ids']),
+                    "include_embeddings": include_embeddings
+                },
+                "documents": []
+            }
+            
+            # 遍历所有文档
+            for i, doc_id in enumerate(results['ids']):
+                doc_entry = {
+                    "id": doc_id,
+                    "content": results['documents'][i],
+                    "metadata": results['metadatas'][i] if results['metadatas'] else {}
+                }
+                
+                # 如果需要包含向量
+                if include_embeddings and results.get('embeddings'):
+                    doc_entry["embedding"] = results['embeddings'][i]
+                
+                export_data["documents"].append(doc_entry)
+            
+            # 确定输出路径
+            if output_path is None:
+                output_dir = Path(CHROMA_DB_PATH).parent
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                output_path = str(output_dir / f"vector_store_export_{timestamp}.json")
+            
+            # 写入JSON文件
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(export_data, f, ensure_ascii=False, indent=2)
+            
+            print(f"✅ 成功导出 {len(results['ids'])} 个文档到: {output_path}")
+            return output_path
+            
+        except Exception as e:
+            raise Exception(f"导出JSON失败: {str(e)}")
+    
+    def get_all_documents(self) -> List[dict]:
+        """
+        获取所有文档的详细信息（不导出文件，直接返回数据）
+        
+        Returns:
+            文档列表，每个文档包含id、content和metadata
+        """
+        if self.vectorstore is None:
+            self.initialize()
+        
+        try:
+            collection = self.vectorstore._collection
+            results = collection.get(include=['metadatas', 'documents'])
+            
+            documents = []
+            for i, doc_id in enumerate(results['ids']):
+                documents.append({
+                    "id": doc_id,
+                    "content": results['documents'][i],
+                    "metadata": results['metadatas'][i] if results['metadatas'] else {}
+                })
+            
+            return documents
+            
+        except Exception as e:
+            raise Exception(f"获取文档列表失败: {str(e)}")

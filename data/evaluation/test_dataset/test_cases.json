@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "created_at": "2026-05-25",
+  "last_updated": "2026-05-25 12:00:00",
+  "test_cases": [
+    {
+      "id": "tc_001",
+      "question": "RAG系统使用的是什么向量数据库？",
+      "category": "技术架构",
+      "difficulty": "easy",
+      "relevant_doc_ids": ["e0b1941e-3ae6-4cc0-ba61-f4068b9cf69c","c4562148-cc80-44c2-86be-f95f3ebbc732"],
+      "expected_keywords": ["ChromaDB", "向量", "存储"],
+      "notes": "基础架构问题"
+    },
+    {
+      "id": "tc_002",
+      "question": "文本分割的策略是什么？",
+      "category": "技术实现",
+      "difficulty": "medium",
+      "relevant_doc_ids": ["c4562148-cc80-44c2-86be-f95f3ebbc732","3adfd519-0849-4254-a0cf-cf3e44c548fa","8ffc8781-5c15-47fb-975d-169ccfbb9a09"],
+      "expected_keywords": ["分割", "chunk", "递归", "字符"],
+      "notes": "核心实现细节"
+    },
+    {
+      "id": "tc_003",
+      "question": "如何上传图片并进行OCR识别？",
+      "category": "功能使用",
+      "difficulty": "easy",
+      "relevant_doc_ids": ["b6b724c1-da2c-44e1-895b-421db4896929"],
+      "expected_keywords": ["图片", "OCR", "上传", "识别"],
+      "notes": "基本功能操作"
+    },
+    {
+      "id": "tc_004",
+      "question": "系统的嵌入模型使用的是什么？",
+      "category": "技术架构",
+      "difficulty": "easy",
+      "relevant_doc_ids": ["cf679b71-6a69-4a0c-b2b8-824eb15b1059","c4562148-cc80-44c2-86be-f95f3ebbc732","c43b5282-424b-48d4-8523-37fac6ab3cb1","648ef6a6-e4ca-4063-afe3-6b152e7b5c15"],
+      "expected_keywords": ["text-embedding-v3", "阿里", "嵌入"],
+      "notes": "模型配置问题"
+    },
+    {
+      "id": "tc_005",
+      "question": "RAG系统的完整工作流程是怎样的？",
+      "category": "系统架构",
+      "difficulty": "hard",
+      "relevant_doc_ids": ["cb22b83c-0932-4332-8587-a970140e95e0"],
+      "expected_keywords": ["检索", "增强", "生成", "流程", "文档"],
+      "notes": "综合性问题，考察整体理解"
+    },
+    {
+      "id": "tc_006",
+      "question": "如何处理PDF文档中的表格数据？",
+      "category": "技术操作",
+      "difficulty": "medium",
+      "relevant_doc_ids": ["40a222d7-d45d-46b2-8345-4a36af2d2912"],
+      "expected_keywords": ["表格", "OCR", "解析", "PDF"],
+      "notes": "用户常见技术问题"
+    },
+    {
+      "id": "tc_007",
+      "question": "LLM模型使用的是什么？",
+      "category": "技术架构",
+      "difficulty": "easy",
+      "relevant_doc_ids": ["ee679635-b97e-45fa-a3d5-f51c2e97a680","cf679b71-6a69-4a0c-b2b8-824eb15b1059"],
+      "expected_keywords": ["qwen-plus", "通义千问", "阿里"],
+      "notes": "模型配置"
+    },
+    {
+      "id": "tc_008",
+      "question": "系统支持哪些文档格式？",
+      "category": "功能特性",
+      "difficulty": "easy",
+      "relevant_doc_ids": ["e0b1941e-3ae6-4cc0-ba61-f4068b9cf69c"],
+      "expected_keywords": ["PDF", "DOCX", "TXT", "图片", "格式"],
+      "notes": "功能范围问题"
+    },
+    {
+      "id": "tc_009",
+      "question": "如何优化检索效果？",
+      "category": "性能优化",
+      "difficulty": "hard",
+      "relevant_doc_ids": ["3adfd519-0849-4254-a0cf-cf3e44c548fa","8ffc8781-5c15-47fb-975d-169ccfbb9a09","a9df3dd2-6c19-4c05-baac-b3247ebf8cd5","d1dbbfb1-9057-4e40-9b5f-217b0685d0dc","55e3b299-c197-4d61-976c-efee5b85d791","28a51b93-8757-4d5c-bf0f-043586013668"],
+      "expected_keywords": ["chunk_size", "重叠", "k值", "优化"],
+      "notes": "高级调优问题"
+    },
+    {
+      "id": "tc_010",
+      "question": "对话历史是如何管理的？",
+      "category": "技术实现",
+      "difficulty": "medium",
+      "relevant_doc_ids": ["c8358dce-50e6-4bb8-b9e9-b017455e6a6a","6a091407-1790-4246-9824-8a1c9f7589ce","bc59f8f0-912b-416e-bc17-d716175f133e"],
+      "expected_keywords": ["历史", "对话", "上下文", "轮数"],
+      "notes": "多轮对话机制"
+    }
+  ]
+}

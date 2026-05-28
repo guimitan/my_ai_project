@@ -8,13 +8,15 @@ from pathlib import Path
 from typing import List
 import tempfile
 
-# 添加项目根目录到Python路径
-sys.path.append(str(Path(__file__).parent.parent))
+import sys
+from pathlib import Path
+# 添加项目根目录到Python路径（从 app/webui/main.py 回到 Jie_Rag/）
+sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from app.data_loader import DataLoader
-from app.text_spliter import TextSpliter
-from app.vector_db import VectorDatabase
-from app.rag_chain import RAGChain
+from app.core.data_loader import DataLoader
+from app.core.text_spliter import TextSpliter
+from app.core.vector_db import VectorDatabase
+from app.core.rag_chain import RAGChain
 from config.settings import DOCUMENTS_DIR
 
 
@@ -237,7 +239,7 @@ def main():
         
         # 清空知识库
         if st.button("🗑️ 清空知识库", type="secondary"):
-            if st.confirm("确定要清空知识库吗？此操作不可恢复！"):
+            if st.button("确定要清空知识库吗？此操作不可恢复！"):
                 try:
                     vector_db = VectorDatabase()
                     vector_db.initialize()
@@ -524,7 +526,8 @@ def main():
         with st.spinner("正在思考中..."):
             try:
                 rag_chain = st.session_state.rag_chain
-                result = rag_chain.query(prompt, k=5)
+                # 传入当前的历史消息记录（不包含当前刚输入的 prompt）
+                result = rag_chain.query(prompt, k=5, history=st.session_state.messages[:-1])
                 
                 answer = result['answer']
                 sources = result['sources']

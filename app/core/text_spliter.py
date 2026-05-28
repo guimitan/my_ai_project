@@ -5,7 +5,8 @@ from typing import List
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 import sys
-sys.path.append('..')
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent.parent))
 from config.settings import CHUNK_SIZE, CHUNK_OVERLAP
 
 

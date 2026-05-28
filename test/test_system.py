@@ -17,19 +17,19 @@ def test_imports():
         from config.settings import CHUNK_SIZE, EMBEDDING_MODEL_NAME
         print("✓ 配置模块导入成功")
         
-        from app.data_loader import DataLoader
+        from app.core.data_loader import DataLoader
         print("✓ 数据加载器导入成功")
         
-        from app.text_spliter import TextSpliter
+        from app.core.text_spliter import TextSpliter
         print("✓ 文本分割器导入成功")
         
-        from app.embedding import EmbeddingModel
+        from app.core.embedding import EmbeddingModel
         print("✓ 嵌入模型导入成功")
         
-        from app.vector_db import VectorDatabase
+        from app.core.vector_db import VectorDatabase
         print("✓ 向量数据库导入成功")
         
-        from app.rag_chain import RAGChain
+        from app.core.rag_chain import RAGChain
         print("✓ RAG链导入成功")
         
         print("\n✅ 所有模块导入成功！\n")
@@ -89,7 +89,7 @@ def test_data_loader():
     print("=" * 50)
     
     try:
-        from app.data_loader import DataLoader
+        from app.core.data_loader import DataLoader
         
         loader = DataLoader()
         print(f"支持的文件格式: {loader.supported_extensions}")
@@ -110,7 +110,7 @@ def test_text_splitter():
     print("=" * 50)
     
     try:
-        from app.text_spliter import TextSpliter
+        from app.core.text_spliter import TextSpliter
         
         splitter = TextSpliter()
         print(f"文本块大小: {splitter.text_splitter._chunk_size}")
@@ -159,7 +159,7 @@ def main():
     if all_passed:
         print("🎉 所有测试通过！系统可以正常使用。")
         print("\n运行以下命令启动应用:")
-        print("  streamlit run app/main.py")
+        print("  streamlit run app/webui/main.py")
     else:
         print("⚠️  部分测试失败，请检查错误信息并修复。")
     print("=" * 50 + "\n")

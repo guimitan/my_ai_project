@@ -32,3 +32,8 @@ numpy>=1.24.0
 pandas>=2.0.0
 scikit-learn>=1.3.0
 plotly>=5.18.0
+
+# 混合检索和重排序
+rank-bm25>=0.2.2  # BM25关键词检索
+jieba>=0.42.1     # 中文分词
+sentence-transformers>=2.2.2  # CrossEncoder重排序模型（可选）

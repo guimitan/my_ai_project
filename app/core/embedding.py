@@ -5,7 +5,8 @@ from typing import List
 import dashscope
 from dashscope import TextEmbedding
 import sys
-sys.path.append('..')
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent.parent))
 from config.settings import EMBEDDING_MODEL_NAME, EMBEDDING_API_KEY
 
 
@@ -75,8 +76,8 @@ class EmbeddingModel:
             嵌入向量列表
         """
         try:
-            # 批量处理，每次最多25个文档
-            batch_size = 25
+            # 批量处理，每次最多10个文档（阿里云API限制）
+            batch_size = 10
             all_embeddings = []
             
             for i in range(0, len(documents), batch_size):
