@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  rag-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jie-rag-app
+    ports:
+      - "8501:8501"
+    environment:
+      # 阿里云 DashScope API Key（必须配置）
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+    volumes:
+      # 持久化向量数据库
+      - ./data/vector_store:/app/data/vector_store
+      # 持久化上传的文档
+      - ./data/documents:/app/data/documents
+    restart: unless-stopped
+    # 资源限制（可选）
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
