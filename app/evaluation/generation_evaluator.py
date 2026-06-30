@@ -6,10 +6,6 @@ import json
 import re
 from typing import Dict, List
 from langchain_core.messages import HumanMessage
-import sys
-from pathlib import Path
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from app.core.rag_chain import RAGChain
 from app.evaluation.config import (

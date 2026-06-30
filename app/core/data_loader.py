@@ -5,9 +5,6 @@ from pathlib import Path
 from typing import List
 from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, TextLoader
 from langchain_core.documents import Document
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).parent.parent.parent))
 from config.settings import SUPPORTED_IMAGE_FORMATS
 from app.core.image_ocr import ImageOCR
 

@@ -1,11 +1,6 @@
 """
 系统测试脚本 - 验证各个组件是否正常工作
 """
-import sys
-from pathlib import Path
-
-# 添加项目根目录到Python路径
-sys.path.append(str(Path(__file__).parent))
 
 def test_imports():
     """测试导入是否成功"""
@@ -20,7 +15,7 @@ def test_imports():
         from app.core.data_loader import DataLoader
         print("✓ 数据加载器导入成功")
         
-        from app.core.text_spliter import TextSpliter
+        from app.core.text_splitter import TextSplitter
         print("✓ 文本分割器导入成功")
         
         from app.core.embedding import EmbeddingModel
@@ -110,9 +105,9 @@ def test_text_splitter():
     print("=" * 50)
     
     try:
-        from app.core.text_spliter import TextSpliter
-        
-        splitter = TextSpliter()
+        from app.core.text_splitter import TextSplitter
+
+        splitter = TextSplitter()
         print(f"文本块大小: {splitter.text_splitter._chunk_size}")
         print(f"文本块重叠: {splitter.text_splitter._chunk_overlap}")
         print("✓ 文本分割器初始化成功")

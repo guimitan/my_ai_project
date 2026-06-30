@@ -1,15 +1,12 @@
 """
 通用文档处理测试脚本 (支持图片OCR、TXT、PDF、DOCX)
-用法：python test/test_ocr_split.py <文件路径>
+用法：python -m test.test_ocr_split <文件路径>
 """
 import sys
 from pathlib import Path
 
-# 添加项目根目录到Python路径
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from app.core.data_loader import DataLoader
-from app.core.text_spliter import TextSpliter
+from app.core.text_splitter import TextSplitter
 from config.settings import CHUNK_SIZE, CHUNK_OVERLAP
 
 
@@ -55,7 +52,7 @@ def test_document_processing(file_path: str):
     print(f"\n✅ 加载成功！原始文本总长度: {len(full_text)} 个字符")
 
     # ========== 第3步：文本切分 ==========
-    splitter = TextSpliter()
+    splitter = TextSplitter()
     print(f"\n🔪 文本切分配置:")
     print(f"   chunk_size  = {CHUNK_SIZE}")
     print(f"   chunk_overlap = {CHUNK_OVERLAP}")

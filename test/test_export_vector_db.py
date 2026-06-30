@@ -1,11 +1,7 @@
 """
 测试向量数据库导出功能
 """
-import sys
 from pathlib import Path
-
-# 添加项目根目录到路径
-sys.path.append(str(Path(__file__).parent))
 
 from app.core.vector_db import VectorDatabase
 

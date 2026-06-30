@@ -2,11 +2,6 @@
 评估系统快速测试脚本
 验证所有模块是否可以正常导入和运行
 """
-import sys
-from pathlib import Path
-
-# 添加项目根目录到路径
-sys.path.append(str(Path(__file__).parent))
 
 def test_imports():
     """测试所有模块的导入"""

@@ -5,10 +5,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import sys
-from pathlib import Path
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from app.evaluation.dataset_manager import TestDatasetManager
 from app.evaluation.experiment_tracker import ExperimentTracker

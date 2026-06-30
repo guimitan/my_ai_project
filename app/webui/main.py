@@ -3,18 +3,12 @@
 """
 import streamlit as st
 import os
-import sys
 from pathlib import Path
 from typing import List
 import tempfile
 
-import sys
-from pathlib import Path
-# 添加项目根目录到Python路径（从 app/webui/main.py 回到 Jie_Rag/）
-sys.path.append(str(Path(__file__).parent.parent.parent))
-
 from app.core.data_loader import DataLoader
-from app.core.text_spliter import TextSpliter
+from app.core.text_splitter import TextSplitter
 from app.core.vector_db import VectorDatabase
 from app.core.rag_chain import RAGChain
 from config.settings import DOCUMENTS_DIR
@@ -115,7 +109,7 @@ def process_document(file_path: str):
         documents = loader.load_document(file_path)
         
         # 分割文本
-        splitter = TextSpliter()
+        splitter = TextSplitter()
         split_docs = splitter.split_documents(documents)
         
         # 添加到向量数据库
@@ -217,6 +211,13 @@ def main():
                 
                 status_text.text("处理完成！")
                 st.success(f"✅ 成功处理 {success_count}/{len(uploaded_files)} 个文件，共 {total_chunks} 个文本块")
+
+                # 刷新混合检索器索引（如果已启用）
+                if "rag_chain" in st.session_state:
+                    rag = st.session_state.rag_chain
+                    if rag.use_hybrid_retrieval and rag.hybrid_retriever:
+                        rag.hybrid_retriever.refresh_index()
+                        st.info("🔄 已刷新混合检索（BM25）索引")
                 
                 # 如果有图片，显示OCR说明
                 image_files = [f for f in uploaded_files if Path(f.name).suffix.lower() in {'.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.webp'}]

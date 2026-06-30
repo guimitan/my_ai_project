@@ -2,11 +2,7 @@
 评估运行器 - 执行完整的评估流程
 整合检索评估和生成评估，保存结果到实验追踪器
 """
-import sys
-from pathlib import Path
 from typing import List, Dict
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from app.evaluation.dataset_manager import TestDatasetManager, TestCase
 from app.evaluation.retrieval_evaluator import RetrievalEvaluator

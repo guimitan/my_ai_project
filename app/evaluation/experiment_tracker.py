@@ -7,9 +7,6 @@ import json
 from datetime import datetime
 from typing import List, Dict, Optional
 from pathlib import Path
-import sys
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from app.evaluation.config import EXPERIMENTS_DB_PATH
 

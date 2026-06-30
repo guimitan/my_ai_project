@@ -5,6 +5,7 @@ RAG链 - 检索增强生成（使用阿里通义千问）
 from typing import List, Dict, Optional
 from langchain_core.documents import Document
 from langchain_core.prompts import PromptTemplate
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 try:
     # 尝试新的导入路径（langchain 0.2+ / 1.x）
     from langchain_community.chat_models import ChatTongyi
@@ -16,9 +17,6 @@ except ImportError:
 from app.core.vector_db import VectorDatabase
 from app.core.hybrid_retriever import HybridRetriever
 from app.core.reranker import RerankerFactory
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).parent.parent.parent))
 from config.settings import LLM_MODEL_NAME, LLM_API_KEY, LLM_TEMPERATURE, LLM_MAX_TOKENS
 
 
@@ -164,25 +162,48 @@ class RAGChain:
             # 不重排序，直接返回Top-K
             return retrieved_docs[:k]
     
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        retry=retry_if_exception_type(Exception),
+        reraise=True,
+    )
+    def _invoke_llm(self, formatted_prompt: str):
+        """
+        调用LLM生成回答（带自动重试）
+
+        Args:
+            formatted_prompt: 格式化后的提示文本
+
+        Returns:
+            LLM生成的回答
+        """
+        if USE_CHAT_MODEL:
+            from langchain_core.messages import HumanMessage
+            response = self.llm.invoke([HumanMessage(content=formatted_prompt)])
+            return response.content if hasattr(response, 'content') else str(response)
+        else:
+            return self.llm.invoke(formatted_prompt)
+
     def generate_answer(self, question: str, context: List[Document], history: str = "") -> str:
         """
         基于上下文生成答案
-        
+
         Args:
             question: 问题
             context: 上下文文档列表
             history: 格式化的对话历史字符串
-            
+
         Returns:
             生成的答案
         """
         # 构建上下文文本
         context_text = "\n\n".join([doc.page_content for doc in context])
-        
+
         # 如果没有LLM，返回模拟响应
         if self.llm is None:
             return self._mock_response(question, context_text)
-        
+
         try:
             # 格式化提示
             formatted_prompt = self.prompt.format(
@@ -190,20 +211,12 @@ class RAGChain:
                 question=question,
                 history=history
             )
-            
-            # 生成回答（兼容ChatModel和LLM）
-            if USE_CHAT_MODEL:
-                # ChatModel需要使用HumanMessage包装
-                from langchain_core.messages import HumanMessage
-                response = self.llm.invoke([HumanMessage(content=formatted_prompt)])
-                # ChatModel返回的是AIMessage对象，需要提取content
-                answer = response.content if hasattr(response, 'content') else str(response)
-            else:
-                # 传统LLM直接调用
-                answer = self.llm.invoke(formatted_prompt)
-            
+
+            # 调用LLM生成回答（带重试机制）
+            answer = self._invoke_llm(formatted_prompt)
+
             return answer
-        
+
         except Exception as e:
             return f"生成答案时出错: {str(e)}\n\n基于检索到的上下文，这里是一些相关信息：\n\n{context_text[:500]}..."
     

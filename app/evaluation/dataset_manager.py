@@ -6,9 +6,6 @@ import json
 from typing import List, Dict, Optional
 from datetime import datetime
 from pathlib import Path
-import sys
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from app.evaluation.config import TEST_DATASET_DIR
 

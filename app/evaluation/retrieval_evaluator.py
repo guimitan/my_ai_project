@@ -5,10 +5,6 @@
 import numpy as np
 from typing import List, Dict, Set
 from langchain_core.documents import Document
-import sys
-from pathlib import Path
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from app.core.rag_chain import RAGChain
 from app.evaluation.dataset_manager import TestCase

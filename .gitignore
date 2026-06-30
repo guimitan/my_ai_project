@@ -47,7 +47,7 @@ data/vector_store/*
 # Environment variables
 .env
 .env.local
-documents/.env.example
+.env.backup
 
 # OS
 .DS_Store
